@@ -1,0 +1,78 @@
+{% extends "job/base.html" %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+    {% for post in posts %}
+    
+    <article class="media content-section">
+    <div style="background-color: rgb(234, 236, 236);" class="media-body fa-border ">
+      <div class="article-metadata">
+        {% if object.author == user and user.is_authenticated %}
+        <h3>You</h3>
+        {% else %}
+        <img style="height: 80px; width: 80px; float: left;" class=" img-circle account-img " src="{{ post.author.profile.image.url }}">
+        <h3 ><a style="padding:5px;"  href="{% url 'profile' %}">{{ post.author }}</a></h3>
+        {% endif %}
+
+      
+        <div class=" navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item list-unstyled" style="padding-left:5px;">
+              <h4 style="padding-left:10px;"><strong> Location</strong></h4 ><h5 style="padding-left:11px;">{{post.Location}} </h5><br>
+            </li>
+            <li class="nav-item list-unstyled" style="padding-left:5px;">
+              <h4 style="padding-left:10px;"><strong> Job Function</strong></h4 ><h5 style="padding-left:11px;">{{post.job_function}} </h5><br>
+            </li>
+            <li class="nav-item list-unstyled" style="padding-left:5px;">
+              <h4 style="padding-left:10px;"><strong> Key Skills</strong></h4 ><h5 style="padding-left:11px;">{{post.key_skills|linebreaks}} </h5><br>
+            </li>
+            <li class="nav-item list-unstyled" style="padding-left:5px;">
+              <h4 style="padding-left:10px;"><strong> Vacancies</strong></h4 ><h5 style="padding-left:11px;">{{post.vacancies}} </h5><br>
+            </li>
+            <li class="nav-item list-unstyled" style="padding-left:5px;">
+              <h4 style="padding-left:10px;"><strong>Experience</strong></h4 ><h5 style="padding-left:11px;">{{post.experience}} </h5><br>
+            </li>
+            <li class="nav-item list-unstyled" style="padding-left:5px;">
+              <h4 style="padding-left:10px;"><strong>salary</strong></h4 ><h5 style="padding-left:11px;">{{post.salary}} </h5><br>
+            </li>
+            <li class="nav-item list-unstyled" style="padding-left:5px;">
+              <h4 style="padding-left:10px;"><strong>Qualification</strong></h4 ><h5 style="padding-left:11px;">{{post.educational_qualification}} </h5><br>
+            </li>
+            <li class="nav-item list-unstyled" style="padding-left:5px;">
+              <h4 style="padding-left:10px;"><strong> Company Name</strong></h4 ><h5 style="padding-left:11px;">{{post.company}} </h5><br>
+            </li>
+          </ul>
+        </div>  
+        <small  class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+      </div>
+
+      <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+      <p style="padding-left: 100px;" class="article-content ">{{ post.job_description|truncatewords:"35"|linebreaks }}</p>
+      <a style="margin-left: 100px;" class=" btn btn-primary"  href="{% url 'post-detail' post.id %}">read more</a>
+      
+    </div>
+  </article>
+    {% endfor %}
+
+      {%if is_paginated %}
+
+         {%if page_obj.has_previous %}
+          <a style="margin-left: 20px; padding: 10px 20px;" class=" btn btn-primary" href="?page={{page_obj.previous_page_number}}"> 🢀{{page_obj.num_pages}} previous</a>
+          
+         {% endif %}
+
+         {%if page_obj.has_next %}
+         {% if page_obj.num_pages == 1 %}
+             <a style="margin-left: 930px; padding: 10px 28px;" class=" btn btn-primary" href="?page={{page_obj.next_page_number}}">next 🢂</a>
+          {% else %}
+            <a style="margin-left: 880px; padding: 10px 28px;" class=" btn btn-primary" href="?page={{page_obj.next_page_number}}">next 🢂</a>
+           {% endif %}
+         {% endif %}
+
+       {% endif %} 
+{% endblock content %}
